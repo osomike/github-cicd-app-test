@@ -34,53 +34,8 @@ jobs:
           echo "VERSION_TAG=$(echo " ${{env.MAJOR_VERSION_TAG}} " "." " ${{env.MINOR_VERSION_TAG}} " )" >> $GITHUB_ENV
 
       - name: Use tag
-        run: echo ${{env.VERSION_TAG}}
-
-      # Login to azure
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Build and push image
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      - name: Use tag
-        run: echo ${{steps.checkoutstep.outputs.CURRENT_TAG}}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Kubernetes deployments doc: https://github.com/marketplace/actions/deploy-to-kubernetes-cluster
-      - name: Install kubectl 
-        uses: azure/setup-kubectl@v3
-        with:
-          version: v1.25.2 # default is latest stable
-        id: install
-
-      - name: Set kubectl context
-        uses: azure/aks-set-context@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
-          resource-group: 'dip-github-actions-rg'
-          cluster-name: 'dip-dev-k8s'
-        id: login
-
-      - name: Deploy k8s manifests
-        uses: Azure/k8s-deploy@v3.1
-        with:
-          namespace: 'dip-dev'
-          manifests: |
-              ./kubernetes/deployment.yml
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo ${{env.MAJOR_VERSION_TAG}}
+          echo ${{env.MINOR_VERSION_TAG}}
+          echo ${{env.VERSION_TAG}}
+
