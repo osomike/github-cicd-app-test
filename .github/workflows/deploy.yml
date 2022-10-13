@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get commit digest
-        id: checkoutstep
+        id: commit-tag
         run: |
           echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
@@ -37,5 +37,5 @@ jobs:
         run: |
           echo ${{env.MAJOR_VERSION_TAG}}
           echo ${{env.MINOR_VERSION_TAG}}
-          echo ${{env.VERSION_TAG}}
+          echo ${{steps.commit-tag.outputs.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}
 
