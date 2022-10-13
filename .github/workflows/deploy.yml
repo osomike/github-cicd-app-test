@@ -34,8 +34,8 @@ jobs:
 
       - name: Generate tag
         run: |
-          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}} > FULL_FILE
-          echo "VERSION_TAG=$(cat FULL_FILE)" >> $GITHUB_ENV
+#          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}} > FULL_FILE
+          echo "VERSION_TAG=${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}" >> $GITHUB_ENV
 
       - name: Use tag
         run: |
