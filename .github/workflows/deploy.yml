@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions
+
+name: ci-cd-for-app
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Get commit digest
+        id: checkoutstep
+        run: |
+          echo ::set-output name=MINOR_VERSION_TAG::$(git rev-parse --short HEAD)
+          echo ::set-output name=MAJOR_VERSION_TAG::$(cat version)
+
+      - name: Use tag
+        run: echo ${{steps.checkoutstep.outputs.MAJOR_VERSION_TAG}+{steps.checkoutstep.outputs.MINOR_VERSION_TAG}}
+
+      # Login to azure
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Use tag
+        run: echo ${{steps.checkoutstep.outputs.CURRENT_TAG}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Kubernetes deployments doc: https://github.com/marketplace/actions/deploy-to-kubernetes-cluster
+      - name: Install kubectl 
+        uses: azure/setup-kubectl@v3
+        with:
+          version: v1.25.2 # default is latest stable
+        id: install
+
+      - name: Set kubectl context
+        uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
+          resource-group: 'dip-github-actions-rg'
+          cluster-name: 'dip-dev-k8s'
+        id: login
+
+      - name: Deploy k8s manifests
+        uses: Azure/k8s-deploy@v3.1
+        with:
+          namespace: 'dip-dev'
+          manifests: |
+              ./kubernetes/deployment.yml
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
