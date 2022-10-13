@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
-          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}} >> FULL_TAG
+          echo "${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}" >> FULL_TAG
           echo "VERSION_TAG=$(cat FULL_TAG)" >> $GITHUB_ENV
 
       - name: Use tag
@@ -39,5 +39,5 @@ jobs:
           echo ${{env.MAJOR_VERSION_TAG}}
           echo ${{env.MINOR_VERSION_TAG}}
           echo ${{env.VERSION_TAG}}
-          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}
+#          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}
 
