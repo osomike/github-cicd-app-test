@@ -29,12 +29,12 @@ jobs:
       - name: Get commit digest
         id: checkoutstep
         run: |
-          echo ::set-output name=MINOR_VERSION_TAG::$(git rev-parse --short HEAD)
-          echo ::set-output name=MAJOR_VERSION_TAG::$(cat version)
-          echo ::set-output name=VERSION_TAG::$($steps.checkoutstep.outputs.MAJOR_VERSION_TAG"."$steps.checkoutstep.outputs.MINOR_VERSION_TAG)
+          echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
+          echo "VERSION_TAG=$(echo "${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}")" >> $GITHUB_ENV
 
       - name: Use tag
-        run: echo ${{steps.checkoutstep.outputs.VERSION_TAG}}
+        run: echo ${{env.VERSION_TAG}}
 
       # Login to azure
       - name: Login to Azure
