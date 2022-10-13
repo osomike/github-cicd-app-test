@@ -40,4 +40,4 @@ jobs:
 
       - name: Use tag
         run: |
-          echo "Current version is: ${{env.VERSION_TAG}}""
+          echo "Current version is: ${{env.VERSION_TAG}}"
