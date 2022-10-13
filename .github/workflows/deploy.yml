@@ -31,9 +31,10 @@ jobs:
         run: |
           echo ::set-output name=MINOR_VERSION_TAG::$(git rev-parse --short HEAD)
           echo ::set-output name=MAJOR_VERSION_TAG::$(cat version)
+          echo ::set-output name=VERSION_TAG::$($steps.checkoutstep.outputs.MAJOR_VERSION_TAG"."$steps.checkoutstep.outputs.MINOR_VERSION_TAG)
 
       - name: Use tag
-        run: echo ${{steps.checkoutstep.outputs.MAJOR_VERSION_TAG}{steps.checkoutstep.outputs.MINOR_VERSION_TAG}}
+        run: echo ${{steps.checkoutstep.outputs.VERSION_TAG}}
 
       # Login to azure
       - name: Login to Azure
