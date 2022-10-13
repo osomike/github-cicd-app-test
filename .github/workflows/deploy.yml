@@ -17,11 +17,13 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: 
-          name: dev
-          url: https://github.com
+    environment:
+      name: dev
+      url: https://github.com
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -30,7 +32,6 @@ jobs:
 
       # Generate major, minor tag
       - name: Get major and minor versions
-        id: commit-tag
         run: |
           echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
@@ -43,3 +44,8 @@ jobs:
       - name: Use tag
         run: |
           echo "Current version is: ${{env.VERSION_TAG}}"
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
