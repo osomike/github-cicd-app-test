@@ -54,11 +54,11 @@ jobs:
 
       # Build and push docker image
       - name: Build and push docker image
-          uses: azure/docker-login@v1
-          with:
-            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-            username: ${{ secrets.SERVICE_PRINCIPAL_CLIENTID }}
-            password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
-        - run: |
-            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.SERVICE_PRINCIPAL_CLIENTID }}
+          password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
