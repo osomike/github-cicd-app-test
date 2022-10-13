@@ -26,16 +26,18 @@ jobs:
       - name: Check out source code
         uses: actions/checkout@v2
 
+      # Generate major, minor tag
       - name: Get major and minor versions
         id: commit-tag
         run: |
           echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
 
+      # Generate tag (must be done on a separate step, otherwise it fails)
       - name: Generate tag
         run: |
           echo "VERSION_TAG=${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}" >> $GITHUB_ENV
 
       - name: Use tag
         run: |
-          echo ${{env.VERSION_TAG}}
+          echo "Current version is: ${{env.VERSION_TAG}}""
