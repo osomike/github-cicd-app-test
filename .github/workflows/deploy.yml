@@ -35,6 +35,7 @@ jobs:
         run: |
           echo "MINOR_VERSION_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "MAJOR_VERSION_TAG=$(cat version)" >> $GITHUB_ENV
+          echo "APP_NAME=app-test"
 
       # Generate tag (must be done on a separate step, otherwise it fails)
       - name: Generate tag
@@ -43,9 +44,21 @@ jobs:
 
       - name: Use tag
         run: |
-          echo "Current version is: ${{env.VERSION_TAG}}"
+          echo "Current version of app ${{env.APP_NAME}} is: ${{env.VERSION_TAG}}"
 
-      - name: 'Login via Azure CLI'
+      # Login to Azure
+      - name: Login via Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Build and push docker image
+      - name: Build and push docker image
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.SERVICE_PRINCIPAL_CLIENTID }}
+            password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
+        - run: |
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.VERSION_TAG}}
