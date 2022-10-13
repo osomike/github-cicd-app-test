@@ -34,7 +34,6 @@ jobs:
           echo "VERSION_TAG=${{env.MAJOR_VERSION_TAG}}"
           echo "VERSION_TAG+=."
           echo "VERSION_TAG+=${{env.MINOR_VERSION_TAG}}" >> $GITHUB_ENV
-          echo "VERSION_TAG=$(cat FULL_TAG)" >> $GITHUB_ENV
 
       - name: Use tag
         run: |
@@ -42,5 +41,5 @@ jobs:
           echo ${{env.MINOR_VERSION_TAG}}
           echo ${{env.VERSION_TAG}}
           echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}} > FULL_FILE
-          echo "cat FULL_FILE"
+          cat FULL_FILE
 
