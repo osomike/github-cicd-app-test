@@ -33,7 +33,7 @@ jobs:
           echo ::set-output name=MAJOR_VERSION_TAG::$(cat version)
 
       - name: Use tag
-        run: echo ${{steps.checkoutstep.outputs.MAJOR_VERSION_TAG}+{steps.checkoutstep.outputs.MINOR_VERSION_TAG}}
+        run: echo ${{steps.checkoutstep.outputs.MAJOR_VERSION_TAG}{steps.checkoutstep.outputs.MINOR_VERSION_TAG}}
 
       # Login to azure
       - name: Login to Azure
