@@ -37,5 +37,5 @@ jobs:
         run: |
           echo ${{env.MAJOR_VERSION_TAG}}
           echo ${{env.MINOR_VERSION_TAG}}
-          echo ${{steps.commit-tag.outputs.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}
+          echo ${{env.MAJOR_VERSION_TAG}}.${{env.MINOR_VERSION_TAG}}
 
