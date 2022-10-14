@@ -1,3 +1,9 @@
 
+# Virtual environments
 venv/*
+
+# Private folder
 private/
+
+# Pycache
+__pycache__/

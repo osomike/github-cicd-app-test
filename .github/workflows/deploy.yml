@@ -47,6 +47,7 @@ jobs:
           echo "Current version of app ${{env.APP_NAME}} is: ${{env.VERSION_TAG}}"
 
       # Login to Azure
+      # https://learn.microsoft.com/en-us/azure/container-instances/container-instances-github-action
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
