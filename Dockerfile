@@ -5,7 +5,7 @@ WORKDIR /main_app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --root-user-action=ignore
 
 ADD app/ .
 
