@@ -28,7 +28,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Generate major, minor tag
       - name: Get major and minor versions
