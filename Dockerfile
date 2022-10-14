@@ -6,7 +6,7 @@ WORKDIR /main_app
 COPY requirements.txt .
 
 RUN python -m pip install --upgrade pip setuptools wheel
-RUN pip install -r requirements.txt
+RUN pip install --root-user-action=ignore -r requirements.txt
 
 ADD app/ .
 
