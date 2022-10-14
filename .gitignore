@@ -7,3 +7,6 @@ private/
 
 # Pycache
 __pycache__/
+
+# Test coverage files
+*.coverage
