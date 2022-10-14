@@ -10,8 +10,8 @@ az ad sp create-for-rbac --name <my-service-principal-name> \
                          --scopes </subscriptions/my-subscription-ID/resourceGroups/myResourceGroupName>
 ```
 
-Store the output of the file as a secret anmed AZURE_CREDENTIALS in the repository.
+Store the output of the file as a secret anmed ```AZURE_CREDENTIALS``` in the repository.
 
 The file cicd.yml from github actions folder will read its content to perform the steps.
 
-The repository should also also contain the Environments dev, acp and prd.
+The repository should also also contain the [Environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment) ```dev```, ```acp``` and ```prd```.
