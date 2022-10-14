@@ -46,4 +46,4 @@ jobs:
           python -m pytest tests
       - name: Run pylinting
         run: |
-          python -m pytest tests
+          pylint app/
