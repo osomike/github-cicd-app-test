@@ -31,10 +31,10 @@ jobs:
         uses: actions/checkout@v3
 
       # Set up python
-      - name: Set up Python 3,7
+      - name: Set up Python 3.8
         uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
@@ -42,21 +42,3 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
         
-
-      # Login to Azure
-      # https://learn.microsoft.com/en-us/azure/container-instances/container-instances-github-action
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # Build and push docker image
-      - name: Build and push docker image
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.SERVICE_PRINCIPAL_CLIENTID }}
-          password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
-      - run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.APP_NAME}}_v${{env.VERSION_TAG}}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.APP_NAME}}:${{env.APP_NAME}}_v${{env.VERSION_TAG}}
