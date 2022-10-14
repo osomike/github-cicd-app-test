@@ -5,8 +5,9 @@ WORKDIR /main_app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN python -m pip install --upgrade pip setuptools wheel
+RUN pip install --root-user-action=ignore -r requirements.txt
 
-COPY app/* .
+ADD app/ .
 
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]
